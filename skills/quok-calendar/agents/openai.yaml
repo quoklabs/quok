@@ -1,0 +1,15 @@
+interface:
+  display_name: "Quok Calendar"
+  short_description: "Manage the shared Quok family calendar"
+  default_prompt: "Use $quok-calendar to manage our shared family calendar in Quok."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "quok"
+      description: "Quok family calendar and lists"
+      transport: "streamable_http"
+      url: "https://api.getquok.com/mcp"
+
+policy:
+  allow_implicit_invocation: true

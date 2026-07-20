@@ -1,0 +1,15 @@
+interface:
+  display_name: "Quok Lists"
+  short_description: "Manage Quok family lists, tasks, and shopping"
+  default_prompt: "Use $quok-lists to manage our family lists in Quok."
+
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "quok"
+      description: "Quok family calendar and lists"
+      transport: "streamable_http"
+      url: "https://api.getquok.com/mcp"
+
+policy:
+  allow_implicit_invocation: true
