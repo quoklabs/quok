@@ -1,11 +1,11 @@
 ---
 name: quok-calendar
-description: Manage the shared Quok family calendar through Quok MCP tools. Use when the user asks to find, list, inspect, create, update, confirm, propose, reschedule, assign, or delete Quok family events, or refers to the family, household, or our calendar.
+description: Manage shared Quok family calendar events and schedules through Quok MCP tools. Use when the user asks to find, list, inspect, create, update, confirm, propose, reschedule, assign, or delete events in Quok or in a family, household, or shared calendar.
 ---
 
 # Quok Calendar
 
-Use Quok as the source of truth for the family's shared household calendar. Do not route Quok, family, household, or "our calendar" requests to Google Calendar or another personal calendar connector.
+Use Quok as the source of truth for the family's shared household calendar. Do not route requests about the Quok calendar, family or household events, or the shared family schedule to Google Calendar or another personal calendar connector.
 
 ## Connect
 
@@ -30,6 +30,7 @@ Treat the tool's live input schema as authoritative. Do not invent fields or rel
 - Send explicit ISO 8601 offsets in event-list windows. Treat `from` as inclusive and `to` as exclusive.
 - Search first when a title could match multiple events. Ask the user to choose only when the results remain ambiguous.
 - Fetch the event before updating or deleting it unless the current result already contains its id, full details, and version.
+- Use `search_family` with the member entity filter to resolve named assignees. Ask when the member remains ambiguous, and never guess member ids.
 - Respect the visibility and permissions enforced by Quok. Do not infer or expose inaccessible private events.
 
 ## Write safely
@@ -37,6 +38,7 @@ Treat the tool's live input schema as authoritative. Do not invent fields or rel
 - Preserve every relevant detail the user supplied, including event type, all-day intent, timezone, recurrence, visibility, and assignees.
 - Ask a concise question when a missing date, time, timezone, recurrence boundary, or matching event would materially change the result.
 - Default normal user-requested events to confirmed. Use proposed only when the user asks to stage something for review.
+- For recurring events, use occurrence scopes exposed by the live tool schema. When the schema has no occurrence scope, treat updates and deletions as applying to the entire series even when the request names one occurrence, and clearly report the series-wide effect.
 - Pass the latest version as `expectedVersion` for updates and deletes when available.
 - Treat an explicit request to delete one identified event as confirmation. Otherwise identify the exact event and obtain confirmation before calling `delete_family_event`.
 - Use the entity returned by a successful write. Do not repeat a write or perform a lookup solely to rediscover its id.

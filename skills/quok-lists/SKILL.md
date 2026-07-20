@@ -43,8 +43,9 @@ Treat the tool's live input schema as authoritative. Do not invent fields or rel
 - Preserve item text, checked state, assignees, quantity, and unit unless the user asks to change them.
 - Pass the latest version as `expectedVersion` for updates and deletes when available.
 - Prefer `complete_family_list_item` for check and uncheck requests because it states the intended final state.
-- Treat an explicit request to delete one identified item or list as confirmation. Otherwise identify the exact target and obtain confirmation before deletion.
-- Warn that `delete_family_list` permanently removes its items before asking for confirmation.
+- Treat an explicit request to delete one identified item as confirmation. Otherwise identify the exact item and obtain confirmation before deleting it.
+- Before deleting a list, resolve it and inspect its contents with `list_family_items`. Do not delete the list if its contents cannot be inspected.
+- If the list contains items, warn that `delete_family_list` permanently removes them and obtain confirmation unless the user already explicitly acknowledged deleting the list and all its items. If the list is empty, treat an explicit request to delete the identified list as confirmation.
 - Use the entity returned by a successful write. Do not repeat a write or perform a lookup solely to rediscover its id.
 - Report the affected list or item briefly. Surface tool errors instead of claiming success.
 
